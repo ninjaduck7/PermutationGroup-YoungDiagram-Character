@@ -135,7 +135,7 @@ def character(partition, cycle_type):
 # partition = [3, 2, 1]
 # cycle_type = [2, 1, 1, 1, 1]
 
-partition = [3, 2, 2]
-cycle_type = [1, 2, 2,2]
+partition = [3, 2, 1]
+cycle_type = [1,1,1,1,2]
 
 print(character(partition, cycle_type))
