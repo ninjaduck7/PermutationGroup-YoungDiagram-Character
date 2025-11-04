@@ -13,7 +13,7 @@
 同时提供两种形式：
 
 1. 🧮 **Python 实现** — 在 `Sn_IrrepChar.py` 中完成符号化算法；
-2. 🌐 **网页交互版** — [在线可交互演示（Sn_IrrepChar.html）](https://ninjaduck7.github.io/PermutationGroup-YoungDiagram-Character)，以 Young 图为核心的图形化可视化计算平台。
+2. 🌐 **网页交互版** — [在线可交互演示（index.html）](https://ninjaduck7.github.io/PermutationGroup-YoungDiagram-Character)，以 Young 图为核心的图形化可视化计算平台。
 
 
 ---
