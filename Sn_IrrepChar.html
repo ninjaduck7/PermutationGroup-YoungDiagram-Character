@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>置换群不可约表示特征标 · Young 图法（规则怪谈版）</title>
+
+  <!-- KaTeX 数学字体支持 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+          onload="renderMathInElement(document.body);"></script>
+
+  <!-- 字体与样式 -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#fafbff;--ink:#1e293b;--muted:#64748b;--accent:#2563eb;
+      --border:#e2e8f0;--card-bg:#ffffff;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family: 'Times New Roman', '宋体', SimSun, serif;
+      background:var(--bg);color:var(--ink);padding:32px;
+      line-height:1.7;min-height:100vh;
+    }
+    .container{max-width:1020px;margin:auto}
+    h1{text-align:center;font-size:30px;font-weight:700;color:var(--accent);margin-bottom:12px}
+    h2,h3{color:var(--accent);margin-top:24px;margin-bottom:8px}
+    p,li{margin-top:6px;margin-bottom:6px}
+    ul{margin-left:24px}
+    code{background:#f1f5f9;padding:2px 4px;border-radius:4px;font-family:'JetBrains Mono',monospace}
+    .card{
+      background:var(--card-bg);border:1px solid var(--border);
+      border-radius:12px;padding:22px 26px;margin-bottom:24px;
+      box-shadow:0 3px 8px rgba(0,0,0,0.05);
+    }
+    .input{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px}
+    label{font-size:13px;color:var(--muted)}
+    input{
+      background:#f8fafc;border:1px solid var(--border);
+      border-radius:6px;padding:8px 12px;font-family:'JetBrains Mono',monospace;
+      font-size:14px;min-width:180px;
+    }
+    input:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+    button{
+      background:var(--accent);color:white;border:none;border-radius:8px;
+      padding:8px 14px;font-weight:600;cursor:pointer;transition:0.2s;
+    }
+    button:hover{filter:brightness(1.05)}
+    .pill{
+      background:#eef2ff;color:#334155;padding:4px 10px;
+      border-radius:8px;display:inline-block;font-size:13px;margin:4px 6px 4px 0;
+    }
+    .svgwrap{
+      overflow:auto;border:1px solid #e5e7eb;border-radius:8px;
+      background:#f9fafb;padding:8px;margin-top:8px;
+    }
+    .fill-card{
+      background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;
+      padding:10px;margin-bottom:12px;
+    }
+    .flow{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;
+    }
+    .good{color:#16a34a}.bad{color:#dc2626}.warn{color:#f59e0b}
+    footer{text-align:center;font-size:12px;color:#94a3b8;margin-top:30px;}
+    .math-section{margin-bottom:40px}
+  </style>
+</head>
+
+<body>
+    
+  <div class="container">
+    <h1>置换群不可约表示的特征标计算</h1>
+    <p class="sub" style="text-align:center;color:#64748b;">  在线可视化演示</p>
+ <div style="text-align:center;margin-bottom:20px;font-family:'Times New Roman','宋体',serif;">
+    <div style="font-size:20px;font-weight:600;letter-spacing:0.3px;color:#1e293b;">
+      北京理工大学 物理学院 · 2025级
+    </div>
+    <div style="font-size:15px;color:#475569;margin-top:4px;">
+      <b>TJM</b> — 核心数学框架（Main Contributor）<br>
+      <b>ZYF</b> — 网页构建与可视化（Web Implementation）
+    </div>
+  </div>
+    <!-- ========== 数学讲解部分 ========== -->
+    <div class="math-section">
+      <h2>一、从置换群到不可约表示</h2>
+      <p>置换群 \( S_n \) 是所有 \( n \) 个元素的重排。例如：</p>
+      <p>\[(1,2,3)(4,5)\] 表示 1→2→3→1，且 4↔5。</p>
+      <p>两个置换若循环结构相同，就属于同一个共轭类。</p>
+
+      <h2>二、从循环类型到“共轭类”与“配分”</h2>
+      <p>每个置换可由循环类型（cycle type）表示，例如：</p>
+      <p>\[(1,2,3)(4,5)\Rightarrow 3+2=(3,2)\]</p>
+      <p>即 3-循环一个、2-循环一个。每个共轭类 ↔ 一个配分 ↔ 一个不可约表示。</p>
+
+      <h2>三、Young 图与 Young 盘</h2>
+      <p>配分 \([λ]=(3,2)\) 画成 Young 图：</p>
+      <p>\[
+      \begin{matrix}
+      \Box & \Box & \Box \\
+      \Box & \Box
+      \end{matrix}
+      \]</p>
+
+     <h2>四、特征标计算的图形方法（规则怪谈这一块儿）</h2>
+<ul>
+  <li>🧩 <b>规则 1（图形召唤）：</b>  
+    给定配分 \( \lambda = (\lambda_1,\lambda_2,\ldots) \)，画出其 <b>Young 图</b>。  
+    该图表示不可约表示 \( V^\lambda \) 的对称性结构，行长度为 \(\lambda_i\)。  
+  </li>
+
+  <li>🌀 <b>规则 2（循环化身）：</b>  
+    设群元素的循环结构为  
+    \[
+    (1^{v_1} 2^{v_2} \cdots n^{v_n}),
+    \]
+    即包含 \(v_k\) 个长度为 \(k\) 的循环。  
+    为每个循环分配一个“符号组”（共 \(v_1+v_2+\cdots\) 组），第 \(i\) 组含 \(k_i\) 个相同数字。
+  </li>
+
+    <li>🧮 <b>规则 3（蛇形填充）：</b>  
+    将各符号组依次填入 Young 图，要求：
+    <ul>
+        <li>每个循环的 \(k_i\) 个相同数字必须连通；</li>
+        <li>只能“向上或向右”延展，且优先向上；</li>
+        <li>行内与列内均需保持弱单调性（不递减）；</li>
+        <li>每个方格仅能被一个循环符号占据。</li>
+    </ul>
+    <div style="text-align:center;margin-top:10px;margin-bottom:10px;">
+        <img src="snake.png" alt="蛇形填充示意图" style="max-width:420px;border:1px solid #ddd;border-radius:8px;">
+        <div style="font-size:13px;color:#64748b;">图：蛇形填充示意（向上优先，其次向右）</div>
+    </div>
+    </li>
+
+  <li>🚫 <b>规则 4（非法归零）：</b>  
+    若某一组循环符号无法在图中合法放置（空间不足或违反单调条件），则该种填充不贡献权重（记为 0）。
+  </li>
+
+  <li>⚖️ <b>规则 5（符号判定）：</b>  
+    对于每种合法填充，定义符号：
+    若某循环在放置过程中经过奇数次“向上移动”，则贡献因子 \(-1\)；  
+    否则贡献 \(+1\)。  
+    整体符号 \(s(\text{填充})\) 为各循环符号的乘积。
+  </li>
+
+  <li>♻️ <b>规则 6（代数求和）：</b>  
+    特征标为所有合法填充的符号代数和：
+    \[
+      \chi^{[\lambda]}_{(1^{v_1}2^{v_2}\cdots)} = 
+      \sum_{\text{所有合法填充 } T} s(T),
+    \]
+    其中 \(s(T)\in\{+1,-1\}\) 为第 \(T\) 个填充的符号。
+  </li>
+</ul>
+
+
+
+    <h2>五、交互计算与可视化</h2>
+
+
+    <!-- ========== 交互程序部分 ========== -->
+   <div class="card">
+  <h3>交互计算与可视化</h3>
+  <p style="font-size:14px;color:#475569;line-height:1.7;margin-bottom:10px;">
+    💡 <b>输入说明：</b><br>
+    ▪ <b>配分 λ</b> 表示 Young 图的行长度，如 
+    <code>3,2,2</code> 可代表 \( \lambda = (3,2,2) \)。<br>
+    ▪ <b>循环长度序列</b> 表示置换的循环类型，例如 
+    <code>1,2,2,2</code> 表示 \((1^1 2^3)\)：一个 1-循环、三个 2-循环。<br>
+    ▪ 输入可用逗号、空格或中括号分隔，程序会自动解析。<br>
+    ▪ 点击 <b>“计算 χ<sup>λ</sup>(C)”</b> 后，程序将枚举所有合法填充并给出特征标与可视化 Young 图。
+  </p>
+
+  <div class="input">
+    <div><label>配分 λ</label><br><input id="partitionInput" value="3,2,2"></div>
+    <div><label>循环长度序列</label><br><input id="cycleInput" value="1,2,2,2"></div>
+    <div><label>展示样例数</label><br><input id="renderLimit" type="number" value="50"></div>
+    <div><label>格子尺寸</label><br><input id="cellSize" type="number" value="22"></div>
+  </div>
+  <button id="runBtn">计算 χ<sup>λ</sup>(C)</button>
+  <div id="result" style="margin-top:10px"></div>
+</div>
+
+
+    <div class="card">
+      <h3>结果与 Young 图可视化</h3>
+      <div id="summary"></div>
+      <div id="fills" class="flow"></div>
+    </div>
+
+    <footer>©2025 TJM & Felix · MIT License</footer>
+  </div>
+
+  <!-- ================= JS逻辑：与原版同步 ================= -->
+  <script>
+    function colorFor(sym){const p=["#93c5fd","#6ee7b7","#fca5a5","#fde68a","#c7b8ff","#67e8f9","#f9a8d4","#a7f3d0","#fcd34d","#ddd6fe"];return p[(sym-1)%p.length];}
+    function parsePartition(s){const arr=s.split(/[，,\s]+/).filter(Boolean).map(x=>parseInt(x,10));if(arr.some(x=>!Number.isFinite(x)||x<=0))throw new Error("配分需为正整数");return arr;}
+    function parseCycle(s){s=s.trim();if(!s)return[];const arr=s.replace(/[\[\]()]/g,"").split(/[，,\s]+/).filter(Boolean).map(x=>parseInt(x,10));return arr.map((l,i)=>({sym:i+1,count:l}));}
+    function makeBoard(p){return p.map(n=>Array(n).fill(0));}
+    function cloneBoard(b){return b.map(r=>r.slice());}
+    function valid(p,r,c){return r>=0&&r<p.length&&c>=0&&c<p[r];}
+
+    function dfsFill(b,p,n,i,s,limit,stored,sum){
+      if(i===n.length){if(stored.length<limit)stored.push({board:cloneBoard(b),sign:s});sum.sum+=s;return;}
+      const {sym,count}=n[i];if(count===0){dfsFill(b,p,n,i+1,s,limit,stored,sum);return;}
+      for(let r0=0;r0<p.length;r0++){
+        let c=0;while(c<p[r0]&&b[r0][c]!==0)c++;if(c>=p[r0])continue;
+        let box=[[r0,c]],r=r0,col=c,ok=true;
+        for(let t=1;t<count;t++){
+          if(valid(p,r-1,col)&&b[r-1][col]===0){r--;box.push([r,col]);continue;}
+          if(valid(p,r,col+1)&&b[r][col+1]===0){col++;box.push([r,col]);continue;}
+          ok=false;break;
+        }
+        if(!ok)continue;if(valid(p,r-1,col)&&b[r-1][col]===0)continue;
+        for(const [rr,cc]of box)b[rr][cc]=sym;
+        const up=r0-r;const sign=(up%2===0)?1:-1;
+        dfsFill(b,p,n,i+1,s*sign,limit,stored,sum);
+        for(const [rr,cc]of box)b[rr][cc]=0;
+      }
+    }
+
+    function compute(p,c,limit){const b=makeBoard(p);const stored=[];const sum={sum:0};dfsFill(b,p,c,0,1,limit,stored,sum);return{fills:stored,chi:sum.sum};}
+
+    function drawBoardSVG(p,b,cell){
+      const h=p.length,w=Math.max(...p),pad=8,W=pad*2+w*cell,H=pad*2+h*cell,ns="http://www.w3.org/2000/svg";
+      const svg=document.createElementNS(ns,'svg');
+      svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.setAttribute('width',W);svg.setAttribute('height',H);
+      for(let r=0;r<h;r++){for(let c=0;c<p[r];c++){
+        const x=pad+c*cell,y=pad+r*cell;const val=b&&b[r]?b[r][c]:0;
+        const rect=document.createElementNS(ns,'rect');
+        rect.setAttribute('x',x);rect.setAttribute('y',y);
+        rect.setAttribute('width',cell);rect.setAttribute('height',cell);
+        rect.setAttribute('fill',val?colorFor(val):'#f1f5f9');
+        rect.setAttribute('stroke','#cbd5e1');svg.appendChild(rect);
+        if(val){const t=document.createElementNS(ns,'text');
+          t.setAttribute('x',x+cell/2);t.setAttribute('y',y+cell/2+4);
+          t.setAttribute('text-anchor','middle');t.setAttribute('font-size',Math.max(11,cell*0.55));
+          t.setAttribute('fill','#1e293b');t.textContent=val;svg.appendChild(t);}
+      }}
+      return svg;
+    }
+
+    function run(){
+      const res=document.getElementById('result'),sum=document.getElementById('summary'),fills=document.getElementById('fills');
+      res.innerHTML='';sum.innerHTML='';fills.innerHTML='';
+      try{
+        const P=parsePartition(document.getElementById('partitionInput').value);
+        const C=parseCycle(document.getElementById('cycleInput').value);
+        const limit=parseInt(document.getElementById('renderLimit').value)||0;
+        const cell=parseInt(document.getElementById('cellSize').value)||22;
+        const t0=performance.now();
+        const out=compute(P,C,limit);
+        const t1=performance.now();
+        res.innerHTML=`<div class='pill'>\\(χ^{λ}(C) = ${out.chi}\\)</div><div class='pill'>样例数：${out.fills.length}</div><div class='pill'>耗时 ${(t1-t0).toFixed(1)} ms</div>`;
+        const base=document.createElement('div');
+        base.innerHTML='<div class="pill">Young 图（空）</div>';
+        const sv1=document.createElement('div');sv1.className='svgwrap';sv1.appendChild(drawBoardSVG(P,null,cell));base.appendChild(sv1);
+        sum.appendChild(base);
+        if(out.fills[0]){
+          const ex=document.createElement('div');ex.innerHTML='<div class="pill">合法填充示例</div>';
+          const sv2=document.createElement('div');sv2.className='svgwrap';sv2.appendChild(drawBoardSVG(P,out.fills[0].board,cell));ex.appendChild(sv2);
+          sum.appendChild(ex);
+        }
+        for(const [i,f]of out.fills.entries()){
+          const card=document.createElement('div');card.className='fill-card';
+          card.innerHTML=`<div class='pill'>样例 #${i+1}</div><div class='pill'>符号：${f.sign>0?'<span class=good>+1</span>':'<span class=bad>−1</span>'}</div>`;
+          const box=document.createElement('div');box.className='svgwrap';box.appendChild(drawBoardSVG(P,f.board,cell));card.appendChild(box);
+          fills.appendChild(card);
+        }
+        renderMathInElement(res);
+      }catch(e){res.innerHTML=`<div class='warn'>错误：${e.message}</div>`;}
+    }
+    document.getElementById('runBtn').addEventListener('click',run);
+    run();
+  </script>
+</body>
+</html>
